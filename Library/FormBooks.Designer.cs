@@ -30,9 +30,9 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panel1 = new Panel();
-            dataGridViewBooks = new DataGridView();
-            buttonExit = new Button();
             labelName = new Label();
+            buttonExit = new Button();
+            dataGridViewBooks = new DataGridView();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBooks).BeginInit();
             SuspendLayout();
@@ -47,6 +47,29 @@
             panel1.Padding = new Padding(10);
             panel1.Size = new Size(964, 60);
             panel1.TabIndex = 0;
+            // 
+            // labelName
+            // 
+            labelName.AutoSize = true;
+            labelName.Dock = DockStyle.Right;
+            labelName.Location = new Point(767, 10);
+            labelName.Name = "labelName";
+            labelName.Size = new Size(37, 19);
+            labelName.TabIndex = 6;
+            labelName.Text = "Имя";
+            // 
+            // buttonExit
+            // 
+            buttonExit.BackColor = Color.FromArgb(74, 111, 165);
+            buttonExit.Dock = DockStyle.Right;
+            buttonExit.FlatStyle = FlatStyle.Flat;
+            buttonExit.ForeColor = Color.White;
+            buttonExit.Location = new Point(804, 10);
+            buttonExit.Name = "buttonExit";
+            buttonExit.Size = new Size(150, 40);
+            buttonExit.TabIndex = 5;
+            buttonExit.Text = "Выйти";
+            buttonExit.UseVisualStyleBackColor = false;
             // 
             // dataGridViewBooks
             // 
@@ -65,29 +88,6 @@
             dataGridViewBooks.Size = new Size(964, 581);
             dataGridViewBooks.TabIndex = 1;
             // 
-            // buttonExit
-            // 
-            buttonExit.BackColor = Color.FromArgb(74, 111, 165);
-            buttonExit.Dock = DockStyle.Right;
-            buttonExit.FlatStyle = FlatStyle.Flat;
-            buttonExit.ForeColor = Color.White;
-            buttonExit.Location = new Point(804, 10);
-            buttonExit.Name = "buttonExit";
-            buttonExit.Size = new Size(150, 40);
-            buttonExit.TabIndex = 5;
-            buttonExit.Text = "Выйти";
-            buttonExit.UseVisualStyleBackColor = false;
-            // 
-            // labelName
-            // 
-            labelName.AutoSize = true;
-            labelName.Dock = DockStyle.Right;
-            labelName.Location = new Point(767, 10);
-            labelName.Name = "labelName";
-            labelName.Size = new Size(37, 19);
-            labelName.TabIndex = 6;
-            labelName.Text = "Имя";
-            // 
             // FormBooks
             // 
             AutoScaleDimensions = new SizeF(9F, 19F);
@@ -97,7 +97,7 @@
             Controls.Add(dataGridViewBooks);
             Controls.Add(panel1);
             Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "FormBooks";
             Padding = new Padding(10);
             Text = "FormBooks";

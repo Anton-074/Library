@@ -31,12 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             pictureBox1 = new PictureBox();
             panelMain = new Panel();
+            textBoxLogin = new TextBox();
             buttonGuest = new Button();
             buttonEnter = new Button();
             textBoxPass = new TextBox();
             labelPass = new Label();
             labelLogin = new Label();
-            textBoxLogin = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panelMain.SuspendLayout();
             SuspendLayout();
@@ -66,6 +66,13 @@
             panelMain.Size = new Size(360, 269);
             panelMain.TabIndex = 1;
             // 
+            // textBoxLogin
+            // 
+            textBoxLogin.Location = new Point(55, 53);
+            textBoxLogin.Name = "textBoxLogin";
+            textBoxLogin.Size = new Size(250, 26);
+            textBoxLogin.TabIndex = 6;
+            // 
             // buttonGuest
             // 
             buttonGuest.BackColor = Color.FromArgb(74, 111, 165);
@@ -77,6 +84,7 @@
             buttonGuest.TabIndex = 5;
             buttonGuest.Text = "Войти как гость";
             buttonGuest.UseVisualStyleBackColor = false;
+            buttonGuest.Click += buttonGuest_Click;
             // 
             // buttonEnter
             // 
@@ -89,6 +97,7 @@
             buttonEnter.TabIndex = 4;
             buttonEnter.Text = "Войти";
             buttonEnter.UseVisualStyleBackColor = false;
+            buttonEnter.Click += buttonEnter_Click;
             // 
             // textBoxPass
             // 
@@ -96,6 +105,7 @@
             textBoxPass.Name = "textBoxPass";
             textBoxPass.Size = new Size(250, 26);
             textBoxPass.TabIndex = 3;
+            textBoxPass.UseSystemPasswordChar = true;
             // 
             // labelPass
             // 
@@ -114,13 +124,6 @@
             labelLogin.Size = new Size(52, 19);
             labelLogin.TabIndex = 0;
             labelLogin.Text = "Логин";
-            // 
-            // textBoxLogin
-            // 
-            textBoxLogin.Location = new Point(55, 53);
-            textBoxLogin.Name = "textBoxLogin";
-            textBoxLogin.Size = new Size(250, 26);
-            textBoxLogin.TabIndex = 6;
             // 
             // FormLogin
             // 
