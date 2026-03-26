@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panel1 = new Panel();
             labelName = new Label();
+            buttonLoans = new Button();
             buttonExit = new Button();
             dataGridViewBooks = new DataGridView();
             panel1.SuspendLayout();
@@ -40,6 +40,7 @@
             // panel1
             // 
             panel1.Controls.Add(labelName);
+            panel1.Controls.Add(buttonLoans);
             panel1.Controls.Add(buttonExit);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(10, 10);
@@ -52,11 +53,25 @@
             // 
             labelName.AutoSize = true;
             labelName.Dock = DockStyle.Right;
-            labelName.Location = new Point(767, 10);
+            labelName.Location = new Point(617, 10);
             labelName.Name = "labelName";
             labelName.Size = new Size(37, 19);
-            labelName.TabIndex = 6;
+            labelName.TabIndex = 8;
             labelName.Text = "Имя";
+            // 
+            // buttonLoans
+            // 
+            buttonLoans.BackColor = Color.FromArgb(74, 111, 165);
+            buttonLoans.Dock = DockStyle.Right;
+            buttonLoans.FlatStyle = FlatStyle.Flat;
+            buttonLoans.ForeColor = Color.White;
+            buttonLoans.Location = new Point(654, 10);
+            buttonLoans.Name = "buttonLoans";
+            buttonLoans.Size = new Size(150, 40);
+            buttonLoans.TabIndex = 7;
+            buttonLoans.Text = "Выдача книг";
+            buttonLoans.UseVisualStyleBackColor = false;
+            buttonLoans.Visible = false;
             // 
             // buttonExit
             // 
@@ -70,20 +85,24 @@
             buttonExit.TabIndex = 5;
             buttonExit.Text = "Выйти";
             buttonExit.UseVisualStyleBackColor = false;
+            buttonExit.Click += buttonExit_Click;
             // 
             // dataGridViewBooks
             // 
-            dataGridViewBooks.AllowUserToResizeColumns = false;
-            dataGridViewBooks.AllowUserToResizeRows = false;
+            dataGridViewBooks.AllowUserToAddRows = false;
+            dataGridViewBooks.AllowUserToDeleteRows = false;
+            dataGridViewBooks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewBooks.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridViewBooks.BackgroundColor = Color.White;
+            dataGridViewBooks.BorderStyle = BorderStyle.None;
             dataGridViewBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewBooks.ColumnHeadersVisible = false;
             dataGridViewBooks.Dock = DockStyle.Fill;
             dataGridViewBooks.Location = new Point(10, 70);
             dataGridViewBooks.MultiSelect = false;
             dataGridViewBooks.Name = "dataGridViewBooks";
             dataGridViewBooks.ReadOnly = true;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dataGridViewBooks.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewBooks.RowHeadersVisible = false;
             dataGridViewBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridViewBooks.Size = new Size(964, 581);
             dataGridViewBooks.TabIndex = 1;
@@ -100,7 +119,7 @@
             Margin = new Padding(4);
             Name = "FormBooks";
             Padding = new Padding(10);
-            Text = "FormBooks";
+            Text = "Список книг";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBooks).EndInit();
@@ -111,7 +130,8 @@
 
         private Panel panel1;
         private DataGridView dataGridViewBooks;
-        private Label labelName;
         private Button buttonExit;
+        private Label labelName;
+        private Button buttonLoans;
     }
 }

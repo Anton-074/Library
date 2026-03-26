@@ -12,7 +12,7 @@ namespace Library
 {
     public partial class FormBooks : Form
     {
-        public User CurrentUser {  get; private set; }
+        public User CurrentUser { get; private set; }
         public bool IsGuest { get; private set; }
         public FormBooks(User user, bool guest)
         {
@@ -43,12 +43,12 @@ namespace Library
 
             CurrentUser = user;
             IsGuest = guest;
-            /*if(IsGuest == false)
+            if(IsGuest == false)
             {
-                button
-            }*/
+                buttonLoans.Visible = true;
+            }
 
-            labelName.Text = IsGuest? "Гость":CurrentUser.Name;
+            labelName.Text = IsGuest ? "Гость" : CurrentUser.FullName;
 
             LoadBooks();
         }
@@ -56,7 +56,7 @@ namespace Library
         {
             try
             {
-                using( var db = new LibraryContext())
+                using (var db = new LibraryContext())
                 {
                     var books = db.Books
                         .Include(i => i.Author)
@@ -67,7 +67,7 @@ namespace Library
                     dataGridViewBooks.SuspendLayout();
                     dataGridViewBooks.Rows.Clear();
 
-                    foreach(var book in books)
+                    foreach (var book in books)
                     {
                         int rowIndex = dataGridViewBooks.Rows.Add();
                         var row = dataGridViewBooks.Rows[rowIndex];
@@ -93,12 +93,12 @@ namespace Library
         }
         private void ApplyRowStyles(DataGridViewRow row, Book book)
         {
-            if(book.AvailableCopies <=0)
+            if (book.AvailableCopies <= 0)
             {
                 row.DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#FFCCCC");
                 /*row.DefaultCellStyle.ForeColor = Color.White;*/
             }
-            if(book.AvailableCopies > 0 && book.AvailableCopies <=2)
+            if (book.AvailableCopies > 0 && book.AvailableCopies <= 2)
             {
                 row.DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#FFF3CD");
             }
@@ -106,9 +106,18 @@ namespace Library
 
         private string FormatBookInfo(Book book)
         {
-            return $"{book}";
+            return $"{book.Author.Name} | {book.Genre.Name}" + Environment.NewLine +
+                $"Издательство: {book.PublishingHouse.Name}" + Environment.NewLine +
+                $"Год издания: {book.Year}" + Environment.NewLine +
+                $"Страниц: {book.Pages}" + Environment.NewLine +
+                $"Всего экземпляров: {book.TotalCopies}" + Environment.NewLine +
+                $"Аннотация: {book.Annotation}";
         }
 
-
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
     }
 }

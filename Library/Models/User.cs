@@ -24,4 +24,6 @@ public partial class User
     public virtual Role Role { get; set; } = null!;
 
     public virtual ICollection<Loan> Loans { get; set; } = new List<Loan>();
+
+    public string FullName => $"{FirstName} {Name} {Patronymic}";
 }

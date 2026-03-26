@@ -8,10 +8,35 @@ namespace Library
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new FormLogin());
+            bool exitProgram = false;
+
+            while (!exitProgram)
+            {
+                using (var formlogin = new FormLogin())
+                {
+                    if (formlogin.ShowDialog() == DialogResult.OK)
+                    {
+                        using (var formBooks = new FormBooks(
+                            formlogin.CurrentUser,
+                            formlogin.IsGuest))
+                        {
+                            if (formBooks.ShowDialog() == DialogResult.Cancel)
+                            {
+                                continue;
+
+                            }
+                            else
+                            {
+                                exitProgram = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        exitProgram = true;
+                    }
+                }
+            }
         }
     }
 }
