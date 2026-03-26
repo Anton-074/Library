@@ -70,6 +70,7 @@
             // 
             buttonGuest.BackColor = Color.FromArgb(74, 111, 165);
             buttonGuest.FlatStyle = FlatStyle.Flat;
+            buttonGuest.ForeColor = Color.White;
             buttonGuest.Location = new Point(105, 218);
             buttonGuest.Name = "buttonGuest";
             buttonGuest.Size = new Size(150, 30);
@@ -81,6 +82,7 @@
             // 
             buttonEnter.BackColor = Color.FromArgb(74, 111, 165);
             buttonEnter.FlatStyle = FlatStyle.Flat;
+            buttonEnter.ForeColor = Color.White;
             buttonEnter.Location = new Point(105, 172);
             buttonEnter.Name = "buttonEnter";
             buttonEnter.Size = new Size(150, 30);
