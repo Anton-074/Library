@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            buttonDelete = new Button();
+            buttonEdit = new Button();
+            buttonAdd = new Button();
             labelName = new Label();
             buttonLoans = new Button();
             buttonExit = new Button();
@@ -39,6 +42,9 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(buttonDelete);
+            panel1.Controls.Add(buttonEdit);
+            panel1.Controls.Add(buttonAdd);
             panel1.Controls.Add(labelName);
             panel1.Controls.Add(buttonLoans);
             panel1.Controls.Add(buttonExit);
@@ -48,6 +54,47 @@
             panel1.Padding = new Padding(10);
             panel1.Size = new Size(964, 60);
             panel1.TabIndex = 0;
+            // 
+            // buttonDelete
+            // 
+            buttonDelete.BackColor = Color.FromArgb(74, 111, 165);
+            buttonDelete.Dock = DockStyle.Left;
+            buttonDelete.FlatStyle = FlatStyle.Flat;
+            buttonDelete.ForeColor = Color.White;
+            buttonDelete.Location = new Point(310, 10);
+            buttonDelete.Name = "buttonDelete";
+            buttonDelete.Size = new Size(150, 40);
+            buttonDelete.TabIndex = 13;
+            buttonDelete.Text = "Удалить";
+            buttonDelete.UseVisualStyleBackColor = false;
+            // 
+            // buttonEdit
+            // 
+            buttonEdit.BackColor = Color.FromArgb(74, 111, 165);
+            buttonEdit.Dock = DockStyle.Left;
+            buttonEdit.FlatStyle = FlatStyle.Flat;
+            buttonEdit.ForeColor = Color.White;
+            buttonEdit.Location = new Point(160, 10);
+            buttonEdit.Name = "buttonEdit";
+            buttonEdit.Size = new Size(150, 40);
+            buttonEdit.TabIndex = 12;
+            buttonEdit.Text = "Редактированить";
+            buttonEdit.UseVisualStyleBackColor = false;
+            buttonEdit.Click += buttonEdit_Click;
+            // 
+            // buttonAdd
+            // 
+            buttonAdd.BackColor = Color.FromArgb(74, 111, 165);
+            buttonAdd.Dock = DockStyle.Left;
+            buttonAdd.FlatStyle = FlatStyle.Flat;
+            buttonAdd.ForeColor = Color.White;
+            buttonAdd.Location = new Point(10, 10);
+            buttonAdd.Name = "buttonAdd";
+            buttonAdd.Size = new Size(150, 40);
+            buttonAdd.TabIndex = 10;
+            buttonAdd.Text = "Добавить";
+            buttonAdd.UseVisualStyleBackColor = false;
+            buttonAdd.Click += buttonAdd_Click;
             // 
             // labelName
             // 
@@ -119,6 +166,7 @@
             Margin = new Padding(4);
             Name = "FormBooks";
             Padding = new Padding(10);
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Список книг";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -133,5 +181,8 @@
         private Button buttonExit;
         private Label labelName;
         private Button buttonLoans;
+        private Button buttonAdd;
+        private Button buttonDelete;
+        private Button buttonEdit;
     }
 }

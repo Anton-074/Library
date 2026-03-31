@@ -32,4 +32,6 @@ public partial class Book
     public virtual PublishingHouse PublishingHouse { get; set; } = null!;
 
     public virtual ICollection<Loan> Loans { get; set; } = new List<Loan>();
+
+    
 }

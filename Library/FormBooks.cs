@@ -12,6 +12,7 @@ namespace Library
 {
     public partial class FormBooks : Form
     {
+        private LibraryContext? db;
         public User CurrentUser { get; private set; }
         public bool IsGuest { get; private set; }
         public FormBooks(User user, bool guest)
@@ -43,7 +44,7 @@ namespace Library
 
             CurrentUser = user;
             IsGuest = guest;
-            if(IsGuest == false)
+            if (IsGuest == false)
             {
                 buttonLoans.Visible = true;
             }
@@ -71,7 +72,7 @@ namespace Library
                     {
                         int rowIndex = dataGridViewBooks.Rows.Add();
                         var row = dataGridViewBooks.Rows[rowIndex];
-
+                        row.Tag = book;
                         //row.Cells["colPhoto"].Value = LoadProductImage()
 
                         row.Cells["colInfo"].Value = FormatBookInfo(book);
@@ -80,6 +81,14 @@ namespace Library
                         row.Cells["colAviableCopies"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                         ApplyRowStyles(row, book);
+                    }
+                    foreach (DataGridViewRow row in dataGridViewBooks.Rows)
+                    {
+                        var book = row.DataBoundItem as Book;
+                        if (book != null)
+                        {
+                            row.Tag = book.Id; // Сохраняем ID в "невидимый" тег строки
+                        }
                     }
                     dataGridViewBooks.ResumeLayout();
                     dataGridViewBooks.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
@@ -118,6 +127,194 @@ namespace Library
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            db = new LibraryContext();
+            if (dataGridViewBooks.SelectedRows.Count == 0)
+                return;
+            DialogResult result = MessageBox.Show("Вы уверены что хотите удалить объект?",
+                "",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+                return;
+            // Получаем выбранную строку и книгу из Tag
+            var selectedRow = dataGridViewBooks.SelectedRows[0];
+            if (selectedRow.Tag is not Book book)
+            {
+                MessageBox.Show("Не удалось получить данные книги.");
+                return;
+            }
+
+            try
+            {
+                using (var context = new LibraryContext())
+                {
+                    // Находим и удаляем книгу
+                    var bookToDelete = context.Books.Find(book.Id); // Предполагая свойство Id в модели Book
+                    if (bookToDelete == null)
+                    {
+                        MessageBox.Show("Книга не найдена в базе данных.");
+                        return;
+                    }
+
+                    context.Books.Remove(bookToDelete);
+                    context.SaveChanges();
+                }
+                MessageBox.Show("Объект удален");
+                LoadBooks();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка удаления: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            LoadBooks();
+        }
+
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            FormAddEditBook form = new FormAddEditBook();
+            using (db = new LibraryContext())
+            {
+                var authors = db.Authors.ToList();
+                var genres = db.Genres.ToList();
+                var publishingHouses = db.PublishingHouses.ToList();
+
+
+
+                int indexAuthors = -1;
+                int indexGenres = -1;
+                int indexPublishingHouses = -1;
+
+
+                foreach (Author u in authors)
+                {
+                    form.comboBoxAuthor.Items.Add(u.Name);
+                }
+                foreach (Genre u in genres)
+                {
+                    form.comboBoxGenre.Items.Add(u.Name);
+                }
+                foreach (PublishingHouse u in publishingHouses)
+                {
+                    form.comboBoxPubliserHouse.Items.Add(u.Name);
+                }
+
+                DialogResult result = form.ShowDialog(this);
+
+
+                if (result == DialogResult.Cancel)
+                    return;
+
+                foreach (Author u in authors)
+                {
+                    if (u.Name == form.comboBoxAuthor.Text)
+                    {
+                        indexAuthors = u.Id;
+                    }
+                }
+                foreach (Genre u in genres)
+                {
+                    if (u.Name == form.comboBoxGenre.Text)
+                    {
+                        indexGenres = u.Id;
+                    }
+                }
+                foreach (PublishingHouse u in publishingHouses)
+                {
+                    if (u.Name == form.comboBoxPubliserHouse.Text)
+                    {
+                        indexPublishingHouses = u.Id;
+                    }
+                }
+
+                Book book = new Book
+                {
+                    IdAuthor = indexAuthors,
+                    IdGenre = indexGenres,
+                    IdPublishingHouse = indexPublishingHouses,
+                    Isbn = form.textBoxISBN.Text,
+                    Pages = form.textBoxPages.Text,
+                    Year = Int32.Parse(form.textBoxYear.Text),
+                    TotalCopies = Int32.Parse(form.textBoxTotalCopies.Text),
+                    AvailableCopies = Int32.Parse(form.textBoxAviableCopies.Text),
+                    Annotation = form.textBoxAnnotation.Text
+                };
+                db.Books.Add(book);
+                db.SaveChanges();
+
+                MessageBox.Show("Объект добавлен");
+                LoadBooks();
+
+                
+            }
+        }
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            // 1. Проверяем, есть ли выбранная строка
+            if (dataGridViewBooks.CurrentRow == null || dataGridViewBooks.CurrentRow.Tag == null)
+            {
+                MessageBox.Show("Выберите книгу в списке!");
+                return;
+            }
+
+            // 2. Извлекаем ID из Tag
+            int bookId = Int32.Parse((string)dataGridViewBooks.CurrentRow.Tag);
+
+            using (db = new LibraryContext())
+            {
+                // 3. Находим книгу
+                var book = db.Books.Find(bookId);
+                if (book == null) return;
+
+                FormAddEditBook form = new FormAddEditBook();
+
+                // Загружаем справочники (как в Add)
+                var authors = db.Authors.ToList();
+                var genres = db.Genres.ToList();
+                var houses = db.PublishingHouses.ToList();
+
+                foreach (var a in authors) form.comboBoxAuthor.Items.Add(a.Name);
+                foreach (var g in genres) form.comboBoxGenre.Items.Add(g.Name);
+                foreach (var p in houses) form.comboBoxPubliserHouse.Items.Add(p.Name);
+
+                // 4. Заполняем поля формы данными из БД
+                form.textBoxISBN.Text = book.Isbn;
+                form.textBoxPages.Text = book.Pages;
+                form.textBoxYear.Text = book.Year.ToString();
+                form.textBoxTotalCopies.Text = book.TotalCopies.ToString();
+                form.textBoxAviableCopies.Text = book.AvailableCopies.ToString();
+                form.textBoxAnnotation.Text = book.Annotation;
+
+                // Устанавливаем текущие значения в комбобоксах
+                form.comboBoxAuthor.Text = authors.FirstOrDefault(a => a.Id == book.IdAuthor)?.Name;
+                form.comboBoxGenre.Text = genres.FirstOrDefault(g => g.Id == book.IdGenre)?.Name;
+                form.comboBoxPubliserHouse.Text = houses.FirstOrDefault(p => p.Id == book.IdPublishingHouse)?.Name;
+
+                // 5. Показываем форму
+                if (form.ShowDialog(this) == DialogResult.Cancel) return;
+
+                // 6. Присваиваем новые значения объекту 'book'
+                book.IdAuthor = authors.FirstOrDefault(a => a.Name == form.comboBoxAuthor.Text)?.Id ?? book.IdAuthor;
+                book.IdGenre = genres.FirstOrDefault(g => g.Name == form.comboBoxGenre.Text)?.Id ?? book.IdGenre;
+                book.IdPublishingHouse = houses.FirstOrDefault(p => p.Name == form.comboBoxPubliserHouse.Text)?.Id ?? book.IdPublishingHouse;
+
+                book.Isbn = form.textBoxISBN.Text;
+                book.Pages = form.textBoxPages.Text;
+                book.Year = int.Parse(form.textBoxYear.Text);
+                book.TotalCopies = int.Parse(form.textBoxTotalCopies.Text);
+                book.AvailableCopies = int.Parse(form.textBoxAviableCopies.Text);
+                book.Annotation = form.textBoxAnnotation.Text;
+
+                // 7. Сохраняем (EF обновит существующую запись)
+                db.SaveChanges();
+
+                MessageBox.Show("Запись успешно изменена");
+                LoadBooks();
+            }
         }
     }
 }
