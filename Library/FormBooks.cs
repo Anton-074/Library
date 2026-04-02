@@ -44,13 +44,17 @@ namespace Library
 
             CurrentUser = user;
             IsGuest = guest;
-            if (CurrentUser.IdRole == 1 || CurrentUser.IdRole == 2)
+            if(IsGuest == false)
             {
-                buttonLoans.Visible = true;
-                buttonAdd.Visible = true;
-                buttonEdit.Visible = true;
-                buttonDelete.Visible = true;
+                if (CurrentUser.IdRole == 1 || CurrentUser.IdRole == 2)
+                {
+                    buttonLoans.Visible = true;
+                    buttonAdd.Visible = true;
+                    buttonEdit.Visible = true;
+                    buttonDelete.Visible = true;
+                }
             }
+            
 
             labelName.Text = IsGuest ? "Гость" : CurrentUser.FullName;
 
