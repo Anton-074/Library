@@ -28,53 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridViewBooks = new DataGridView();
-            panel1 = new Panel();
+            dataGridViewOrders = new DataGridView();
+            panelTop = new Panel();
             buttonDelete = new Button();
             buttonEdit = new Button();
             buttonAdd = new Button();
             labelName = new Label();
             buttonExit = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewBooks).BeginInit();
-            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewOrders).BeginInit();
+            panelTop.SuspendLayout();
             SuspendLayout();
             // 
-            // dataGridViewBooks
+            // dataGridViewOrders
             // 
-            dataGridViewBooks.AllowUserToAddRows = false;
-            dataGridViewBooks.AllowUserToDeleteRows = false;
-            dataGridViewBooks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewBooks.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewBooks.BackgroundColor = Color.White;
-            dataGridViewBooks.BorderStyle = BorderStyle.None;
-            dataGridViewBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewBooks.ColumnHeadersVisible = false;
-            dataGridViewBooks.Dock = DockStyle.Fill;
-            dataGridViewBooks.Location = new Point(0, 76);
-            dataGridViewBooks.Margin = new Padding(4, 4, 4, 4);
-            dataGridViewBooks.MultiSelect = false;
-            dataGridViewBooks.Name = "dataGridViewBooks";
-            dataGridViewBooks.ReadOnly = true;
-            dataGridViewBooks.RowHeadersVisible = false;
-            dataGridViewBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewBooks.Size = new Size(984, 585);
-            dataGridViewBooks.TabIndex = 3;
+            dataGridViewOrders.AllowUserToAddRows = false;
+            dataGridViewOrders.AllowUserToDeleteRows = false;
+            dataGridViewOrders.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewOrders.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewOrders.BackgroundColor = Color.White;
+            dataGridViewOrders.BorderStyle = BorderStyle.None;
+            dataGridViewOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewOrders.ColumnHeadersVisible = false;
+            dataGridViewOrders.Dock = DockStyle.Fill;
+            dataGridViewOrders.Location = new Point(0, 76);
+            dataGridViewOrders.Margin = new Padding(4);
+            dataGridViewOrders.MultiSelect = false;
+            dataGridViewOrders.Name = "dataGridViewOrders";
+            dataGridViewOrders.ReadOnly = true;
+            dataGridViewOrders.RowHeadersVisible = false;
+            dataGridViewOrders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewOrders.Size = new Size(984, 585);
+            dataGridViewOrders.TabIndex = 3;
             // 
-            // panel1
+            // panelTop
             // 
-            panel1.BackColor = Color.White;
-            panel1.Controls.Add(buttonDelete);
-            panel1.Controls.Add(buttonEdit);
-            panel1.Controls.Add(buttonAdd);
-            panel1.Controls.Add(labelName);
-            panel1.Controls.Add(buttonExit);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(4, 4, 4, 4);
-            panel1.Name = "panel1";
-            panel1.Padding = new Padding(13, 13, 13, 13);
-            panel1.Size = new Size(984, 76);
-            panel1.TabIndex = 2;
+            panelTop.BackColor = Color.White;
+            panelTop.Controls.Add(buttonDelete);
+            panelTop.Controls.Add(buttonEdit);
+            panelTop.Controls.Add(buttonAdd);
+            panelTop.Controls.Add(labelName);
+            panelTop.Controls.Add(buttonExit);
+            panelTop.Dock = DockStyle.Top;
+            panelTop.Location = new Point(0, 0);
+            panelTop.Margin = new Padding(4);
+            panelTop.Name = "panelTop";
+            panelTop.Padding = new Padding(13);
+            panelTop.Size = new Size(984, 76);
+            panelTop.TabIndex = 2;
             // 
             // buttonDelete
             // 
@@ -83,7 +83,7 @@
             buttonDelete.FlatStyle = FlatStyle.Flat;
             buttonDelete.ForeColor = Color.White;
             buttonDelete.Location = new Point(399, 13);
-            buttonDelete.Margin = new Padding(4, 4, 4, 4);
+            buttonDelete.Margin = new Padding(4);
             buttonDelete.Name = "buttonDelete";
             buttonDelete.Size = new Size(193, 50);
             buttonDelete.TabIndex = 13;
@@ -98,7 +98,7 @@
             buttonEdit.FlatStyle = FlatStyle.Flat;
             buttonEdit.ForeColor = Color.White;
             buttonEdit.Location = new Point(206, 13);
-            buttonEdit.Margin = new Padding(4, 4, 4, 4);
+            buttonEdit.Margin = new Padding(4);
             buttonEdit.Name = "buttonEdit";
             buttonEdit.Size = new Size(193, 50);
             buttonEdit.TabIndex = 12;
@@ -113,7 +113,7 @@
             buttonAdd.FlatStyle = FlatStyle.Flat;
             buttonAdd.ForeColor = Color.White;
             buttonAdd.Location = new Point(13, 13);
-            buttonAdd.Margin = new Padding(4, 4, 4, 4);
+            buttonAdd.Margin = new Padding(4);
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Size = new Size(193, 50);
             buttonAdd.TabIndex = 10;
@@ -139,34 +139,35 @@
             buttonExit.FlatStyle = FlatStyle.Flat;
             buttonExit.ForeColor = Color.White;
             buttonExit.Location = new Point(778, 13);
-            buttonExit.Margin = new Padding(4, 4, 4, 4);
+            buttonExit.Margin = new Padding(4);
             buttonExit.Name = "buttonExit";
             buttonExit.Size = new Size(193, 50);
             buttonExit.TabIndex = 5;
             buttonExit.Text = "Выйти";
             buttonExit.UseVisualStyleBackColor = false;
+            buttonExit.Click += buttonExit_Click;
             // 
             // FormOrders
             // 
             AutoScaleDimensions = new SizeF(9F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(984, 661);
-            Controls.Add(dataGridViewBooks);
-            Controls.Add(panel1);
+            Controls.Add(dataGridViewOrders);
+            Controls.Add(panelTop);
             Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "FormOrders";
             Text = "FormOrders";
-            ((System.ComponentModel.ISupportInitialize)dataGridViewBooks).EndInit();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewOrders).EndInit();
+            panelTop.ResumeLayout(false);
+            panelTop.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DataGridView dataGridViewBooks;
-        private Panel panel1;
+        private DataGridView dataGridViewOrders;
+        private Panel panelTop;
         private Button buttonDelete;
         private Button buttonEdit;
         private Button buttonAdd;

@@ -44,13 +44,12 @@ namespace Library
 
             CurrentUser = user;
             IsGuest = guest;
-            if (IsGuest == false)
+            if (CurrentUser.IdRole == 1 || CurrentUser.IdRole == 2)
             {
                 buttonLoans.Visible = true;
                 buttonAdd.Visible = true;
                 buttonEdit.Visible = true;
                 buttonDelete.Visible = true;
-
             }
 
             labelName.Text = IsGuest ? "Гость" : CurrentUser.FullName;
@@ -330,7 +329,8 @@ namespace Library
 
         private void buttonLoans_Click(object sender, EventArgs e)
         {
-
+            FormOrders form = new FormOrders(CurrentUser);
+            form.ShowDialog();
         }
     }
 }
