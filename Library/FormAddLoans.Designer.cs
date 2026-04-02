@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             panelFill = new Panel();
+            comboBoxBook = new ComboBox();
+            label2 = new Label();
+            comboBoxStatus = new ComboBox();
+            dateTimePickerReturn = new DateTimePicker();
+            dateTimePickerPlan = new DateTimePicker();
+            dateTimePickerIs = new DateTimePicker();
+            label1 = new Label();
             labelAveableCopies = new Label();
             labePages = new Label();
             labelISBN = new Label();
@@ -39,13 +46,6 @@
             buttonSave = new Button();
             panelTop = new Panel();
             labelAddBook = new Label();
-            label1 = new Label();
-            dateTimePickerIs = new DateTimePicker();
-            dateTimePickerPlan = new DateTimePicker();
-            dateTimePickerReturn = new DateTimePicker();
-            label2 = new Label();
-            comboBoxStatus = new ComboBox();
-            comboBoxBook = new ComboBox();
             panelFill.SuspendLayout();
             panelBottom.SuspendLayout();
             panelTop.SuspendLayout();
@@ -68,11 +68,70 @@
             panelFill.Controls.Add(comboBoxUser);
             panelFill.Dock = DockStyle.Fill;
             panelFill.Location = new Point(0, 72);
-            panelFill.Margin = new Padding(4, 4, 4, 4);
+            panelFill.Margin = new Padding(4);
             panelFill.Name = "panelFill";
-            panelFill.Padding = new Padding(13, 13, 13, 13);
+            panelFill.Padding = new Padding(13);
             panelFill.Size = new Size(384, 513);
             panelFill.TabIndex = 5;
+            // 
+            // comboBoxBook
+            // 
+            comboBoxBook.FormattingEnabled = true;
+            comboBoxBook.Location = new Point(81, 152);
+            comboBoxBook.Margin = new Padding(4);
+            comboBoxBook.Name = "comboBoxBook";
+            comboBoxBook.Size = new Size(238, 27);
+            comboBoxBook.TabIndex = 21;
+            // 
+            // label2
+            // 
+            label2.Location = new Point(78, 434);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(239, 34);
+            label2.TabIndex = 20;
+            label2.Text = "Статус";
+            label2.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // comboBoxStatus
+            // 
+            comboBoxStatus.FormattingEnabled = true;
+            comboBoxStatus.Location = new Point(80, 472);
+            comboBoxStatus.Margin = new Padding(4);
+            comboBoxStatus.Name = "comboBoxStatus";
+            comboBoxStatus.Size = new Size(238, 27);
+            comboBoxStatus.TabIndex = 19;
+            // 
+            // dateTimePickerReturn
+            // 
+            dateTimePickerReturn.Location = new Point(78, 393);
+            dateTimePickerReturn.Name = "dateTimePickerReturn";
+            dateTimePickerReturn.Size = new Size(238, 26);
+            dateTimePickerReturn.TabIndex = 18;
+            // 
+            // dateTimePickerPlan
+            // 
+            dateTimePickerPlan.Location = new Point(79, 317);
+            dateTimePickerPlan.Name = "dateTimePickerPlan";
+            dateTimePickerPlan.Size = new Size(238, 26);
+            dateTimePickerPlan.TabIndex = 17;
+            // 
+            // dateTimePickerIs
+            // 
+            dateTimePickerIs.Location = new Point(81, 235);
+            dateTimePickerIs.Name = "dateTimePickerIs";
+            dateTimePickerIs.Size = new Size(238, 26);
+            dateTimePickerIs.TabIndex = 16;
+            // 
+            // label1
+            // 
+            label1.Location = new Point(78, 356);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(239, 34);
+            label1.TabIndex = 14;
+            label1.Text = "Фактическая дата возврата";
+            label1.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // labelAveableCopies
             // 
@@ -112,14 +171,14 @@
             labelAuthor.Name = "labelAuthor";
             labelAuthor.Size = new Size(239, 34);
             labelAuthor.TabIndex = 1;
-            labelAuthor.Text = "Пользователь";
+            labelAuthor.Text = "Читательский билет";
             labelAuthor.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // comboBoxUser
             // 
             comboBoxUser.FormattingEnabled = true;
             comboBoxUser.Location = new Point(80, 65);
-            comboBoxUser.Margin = new Padding(4, 4, 4, 4);
+            comboBoxUser.Margin = new Padding(4);
             comboBoxUser.Name = "comboBoxUser";
             comboBoxUser.Size = new Size(238, 27);
             comboBoxUser.TabIndex = 0;
@@ -131,7 +190,7 @@
             panelBottom.Controls.Add(buttonSave);
             panelBottom.Dock = DockStyle.Bottom;
             panelBottom.Location = new Point(0, 585);
-            panelBottom.Margin = new Padding(4, 4, 4, 4);
+            panelBottom.Margin = new Padding(4);
             panelBottom.Name = "panelBottom";
             panelBottom.Size = new Size(384, 103);
             panelBottom.TabIndex = 4;
@@ -143,7 +202,7 @@
             buttonCancel.FlatStyle = FlatStyle.Flat;
             buttonCancel.ForeColor = Color.White;
             buttonCancel.Location = new Point(202, 18);
-            buttonCancel.Margin = new Padding(4, 4, 4, 4);
+            buttonCancel.Margin = new Padding(4);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(132, 67);
             buttonCancel.TabIndex = 9;
@@ -157,7 +216,7 @@
             buttonSave.FlatStyle = FlatStyle.Flat;
             buttonSave.ForeColor = Color.White;
             buttonSave.Location = new Point(51, 18);
-            buttonSave.Margin = new Padding(4, 4, 4, 4);
+            buttonSave.Margin = new Padding(4);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(132, 67);
             buttonSave.TabIndex = 8;
@@ -170,9 +229,9 @@
             panelTop.Controls.Add(labelAddBook);
             panelTop.Dock = DockStyle.Top;
             panelTop.Location = new Point(0, 0);
-            panelTop.Margin = new Padding(4, 4, 4, 4);
+            panelTop.Margin = new Padding(4);
             panelTop.Name = "panelTop";
-            panelTop.Padding = new Padding(13, 13, 13, 13);
+            panelTop.Padding = new Padding(13);
             panelTop.Size = new Size(384, 72);
             panelTop.TabIndex = 3;
             // 
@@ -187,65 +246,6 @@
             labelAddBook.Text = "Добавить заказ";
             labelAddBook.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label1
-            // 
-            label1.Location = new Point(78, 356);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(239, 34);
-            label1.TabIndex = 14;
-            label1.Text = "Фактическая дата возврата";
-            label1.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // dateTimePickerIs
-            // 
-            dateTimePickerIs.Location = new Point(81, 235);
-            dateTimePickerIs.Name = "dateTimePickerIs";
-            dateTimePickerIs.Size = new Size(238, 26);
-            dateTimePickerIs.TabIndex = 16;
-            // 
-            // dateTimePickerPlan
-            // 
-            dateTimePickerPlan.Location = new Point(79, 317);
-            dateTimePickerPlan.Name = "dateTimePickerPlan";
-            dateTimePickerPlan.Size = new Size(238, 26);
-            dateTimePickerPlan.TabIndex = 17;
-            // 
-            // dateTimePickerReturn
-            // 
-            dateTimePickerReturn.Location = new Point(78, 393);
-            dateTimePickerReturn.Name = "dateTimePickerReturn";
-            dateTimePickerReturn.Size = new Size(238, 26);
-            dateTimePickerReturn.TabIndex = 18;
-            // 
-            // label2
-            // 
-            label2.Location = new Point(78, 434);
-            label2.Margin = new Padding(4, 0, 4, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(239, 34);
-            label2.TabIndex = 20;
-            label2.Text = "Статус";
-            label2.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // comboBoxStatus
-            // 
-            comboBoxStatus.FormattingEnabled = true;
-            comboBoxStatus.Location = new Point(80, 472);
-            comboBoxStatus.Margin = new Padding(4);
-            comboBoxStatus.Name = "comboBoxStatus";
-            comboBoxStatus.Size = new Size(238, 27);
-            comboBoxStatus.TabIndex = 19;
-            // 
-            // comboBoxBook
-            // 
-            comboBoxBook.FormattingEnabled = true;
-            comboBoxBook.Location = new Point(81, 152);
-            comboBoxBook.Margin = new Padding(4);
-            comboBoxBook.Name = "comboBoxBook";
-            comboBoxBook.Size = new Size(238, 27);
-            comboBoxBook.TabIndex = 21;
-            // 
             // FormAddLoans
             // 
             AutoScaleDimensions = new SizeF(9F, 19F);
@@ -255,7 +255,7 @@
             Controls.Add(panelBottom);
             Controls.Add(panelTop);
             Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "FormAddLoans";
             Text = "FormAddLoans";
             panelFill.ResumeLayout(false);

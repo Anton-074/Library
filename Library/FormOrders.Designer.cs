@@ -90,6 +90,7 @@
             buttonDelete.Text = "Удалить";
             buttonDelete.UseVisualStyleBackColor = false;
             buttonDelete.Visible = false;
+            buttonDelete.Click += buttonDelete_Click;
             // 
             // buttonEdit
             // 
@@ -105,6 +106,7 @@
             buttonEdit.Text = "Редактированить";
             buttonEdit.UseVisualStyleBackColor = false;
             buttonEdit.Visible = false;
+            buttonEdit.Click += buttonEdit_Click;
             // 
             // buttonAdd
             // 
@@ -120,6 +122,7 @@
             buttonAdd.Text = "Добавить";
             buttonAdd.UseVisualStyleBackColor = false;
             buttonAdd.Visible = false;
+            buttonAdd.Click += buttonAdd_Click;
             // 
             // labelName
             // 
