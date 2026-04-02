@@ -47,6 +47,10 @@ namespace Library
             if (IsGuest == false)
             {
                 buttonLoans.Visible = true;
+                buttonAdd.Visible = true;
+                buttonEdit.Visible = true;
+                buttonDelete.Visible = true;
+
             }
 
             labelName.Text = IsGuest ? "Гость" : CurrentUser.FullName;
@@ -81,14 +85,6 @@ namespace Library
                         row.Cells["colAviableCopies"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                         ApplyRowStyles(row, book);
-                    }
-                    foreach (DataGridViewRow row in dataGridViewBooks.Rows)
-                    {
-                        var book = row.DataBoundItem as Book;
-                        if (book != null)
-                        {
-                            row.Tag = book.Id; // Сохраняем ID в "невидимый" тег строки
-                        }
                     }
                     dataGridViewBooks.ResumeLayout();
                     dataGridViewBooks.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
@@ -249,7 +245,7 @@ namespace Library
                 MessageBox.Show("Объект добавлен");
                 LoadBooks();
 
-                
+
             }
         }
         private void buttonEdit_Click(object sender, EventArgs e)
@@ -261,27 +257,38 @@ namespace Library
                 return;
             }
 
-            // 2. Извлекаем ID из Tag
-            int bookId = Int32.Parse((string)dataGridViewBooks.CurrentRow.Tag);
-
-            using (db = new LibraryContext())
+            // 2. Извлекаем объект Book напрямую из Tag
+            // (Мы сохранили его там в методе LoadBooks: row.Tag = book)
+            if (dataGridViewBooks.CurrentRow.Tag is not Book selectedBook)
             {
-                // 3. Находим книгу
-                var book = db.Books.Find(bookId);
-                if (book == null) return;
+                MessageBox.Show("Ошибка данных строки.");
+                return;
+            }
+
+            int bookId = selectedBook.Id; // Теперь ID берем из объекта
+
+            using (var context = new LibraryContext()) // Используем локальный контекст
+            {
+                // 3. Находим книгу в БД по ID
+                var book = context.Books.Find(bookId);
+                if (book == null)
+                {
+                    MessageBox.Show("Книга не найдена в базе данных.");
+                    return;
+                }
 
                 FormAddEditBook form = new FormAddEditBook();
 
-                // Загружаем справочники (как в Add)
-                var authors = db.Authors.ToList();
-                var genres = db.Genres.ToList();
-                var houses = db.PublishingHouses.ToList();
+                // Загружаем справочники
+                var authors = context.Authors.ToList();
+                var genres = context.Genres.ToList();
+                var houses = context.PublishingHouses.ToList();
 
                 foreach (var a in authors) form.comboBoxAuthor.Items.Add(a.Name);
                 foreach (var g in genres) form.comboBoxGenre.Items.Add(g.Name);
                 foreach (var p in houses) form.comboBoxPubliserHouse.Items.Add(p.Name);
 
-                // 4. Заполняем поля формы данными из БД
+                // 4. Заполняем поля формы данными
                 form.textBoxISBN.Text = book.Isbn;
                 form.textBoxPages.Text = book.Pages;
                 form.textBoxYear.Text = book.Year.ToString();
@@ -297,24 +304,33 @@ namespace Library
                 // 5. Показываем форму
                 if (form.ShowDialog(this) == DialogResult.Cancel) return;
 
-                // 6. Присваиваем новые значения объекту 'book'
-                book.IdAuthor = authors.FirstOrDefault(a => a.Name == form.comboBoxAuthor.Text)?.Id ?? book.IdAuthor;
-                book.IdGenre = genres.FirstOrDefault(g => g.Name == form.comboBoxGenre.Text)?.Id ?? book.IdGenre;
-                book.IdPublishingHouse = houses.FirstOrDefault(p => p.Name == form.comboBoxPubliserHouse.Text)?.Id ?? book.IdPublishingHouse;
+                // 6. Обновляем данные объекта, который отслеживается контекстом
+                var selectedAuthor = authors.FirstOrDefault(a => a.Name == form.comboBoxAuthor.Text);
+                var selectedGenre = genres.FirstOrDefault(g => g.Name == form.comboBoxGenre.Text);
+                var selectedHouse = houses.FirstOrDefault(p => p.Name == form.comboBoxPubliserHouse.Text);
+
+                if (selectedAuthor != null) book.IdAuthor = selectedAuthor.Id;
+                if (selectedGenre != null) book.IdGenre = selectedGenre.Id;
+                if (selectedHouse != null) book.IdPublishingHouse = selectedHouse.Id;
 
                 book.Isbn = form.textBoxISBN.Text;
                 book.Pages = form.textBoxPages.Text;
-                book.Year = int.Parse(form.textBoxYear.Text);
-                book.TotalCopies = int.Parse(form.textBoxTotalCopies.Text);
-                book.AvailableCopies = int.Parse(form.textBoxAviableCopies.Text);
+                book.Year = int.TryParse(form.textBoxYear.Text, out int y) ? y : book.Year;
+                book.TotalCopies = int.TryParse(form.textBoxTotalCopies.Text, out int tc) ? tc : book.TotalCopies;
+                book.AvailableCopies = int.TryParse(form.textBoxAviableCopies.Text, out int ac) ? ac : book.AvailableCopies;
                 book.Annotation = form.textBoxAnnotation.Text;
 
-                // 7. Сохраняем (EF обновит существующую запись)
-                db.SaveChanges();
+                // 7. Сохраняем
+                context.SaveChanges();
 
                 MessageBox.Show("Запись успешно изменена");
                 LoadBooks();
             }
+        }
+
+        private void buttonLoans_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
