@@ -339,7 +339,6 @@
         #endregion
 
         private Panel panelTop;
-        private Label labelAddBook;
         private Panel panelBottom;
         private Button buttonCancel;
         private Button buttonSave;
@@ -365,5 +364,6 @@
         public TextBox textBoxAnnotation;
         public TextBox textBoxTotalCopies;
         public ComboBox comboBoxPubliserHouse;
+        public Label labelAddBook;
     }
 }

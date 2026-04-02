@@ -44,7 +44,7 @@ namespace Library
 
             CurrentUser = user;
             IsGuest = guest;
-            if(IsGuest == false)
+            if (IsGuest == false)
             {
                 if (CurrentUser.IdRole == 1 || CurrentUser.IdRole == 2)
                 {
@@ -54,11 +54,29 @@ namespace Library
                     buttonDelete.Visible = true;
                 }
             }
-            
+
 
             labelName.Text = IsGuest ? "Гость" : CurrentUser.FullName;
 
             LoadBooks();
+            // В конструктор после LoadBooks();
+            using (var db = new LibraryContext())
+            {
+                var houses = db.PublishingHouses.ToList();
+                comboBoxFilterPublisher.Items.Add("Все издательства"); // Опция сброса фильтра
+                foreach (var h in houses)
+                {
+                    comboBoxFilterPublisher.Items.Add(h.Name);
+                }
+                comboBoxFilterPublisher.SelectedIndex = 0; // Выбираем "Все издательства" по умолчанию
+            }
+            comboBoxSort.Items.AddRange(new string[] {
+                "По умолчанию",
+                "Сначала новые книги",
+                "По автору (А-Я)",
+                "По объему (страницы)"
+            });
+            comboBoxSort.SelectedIndex = 0;
         }
         public void LoadBooks()
         {
@@ -66,37 +84,65 @@ namespace Library
             {
                 using (var db = new LibraryContext())
                 {
-                    var books = db.Books
-                        .Include(i => i.Author)
-                        .Include(i => i.Genre)
-                        .Include(i => i.PublishingHouse)
-                        .ToList();
+                    // 1. Начальный запрос со всеми связями
+                    IQueryable<Book> query = db.Books
+                        .Include(b => b.Author)
+                        .Include(b => b.Genre)
+                        .Include(b => b.PublishingHouse);
 
+                    // 2. ФИЛЬТРАЦИЯ (по издательству)
+                    string selectedPub = comboBoxFilterPublisher.SelectedItem?.ToString();
+                    if (!string.IsNullOrEmpty(selectedPub) && selectedPub != "Все издательства")
+                    {
+                        query = query.Where(b => b.PublishingHouse.Name == selectedPub);
+                    }
+
+                    // 3. ПОИСК (по названию/аннотации или автору)
+                    string search = textBoxSearch.Text.Trim().ToLower();
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        query = query.Where(b => b.Annotation.ToLower().Contains(search) ||
+                                                 b.Author.Name.ToLower().Contains(search));
+                    }
+
+                    // 4. СОРТИРОВКА
+                    // Допустим, в comboBoxSort пункты: "По умолчанию", "По году (новые)", "По названию"
+                    switch (comboBoxSort.SelectedIndex)
+                    {
+                        case 1: // По году (сначала свежие)
+                            query = query.OrderByDescending(b => b.Year);
+                            break;
+                        case 2: // По автору (А-Я)
+                            query = query.OrderBy(b => b.Author.Name);
+                            break;
+                        case 3: // По количеству страниц
+                            query = query.OrderBy(b => b.Pages);
+                            break;
+                        default: // По ID или умолчанию
+                            query = query.OrderBy(b => b.Id);
+                            break;
+                    }
+
+                    var books = query.ToList();
+
+                    // 5. Отрисовка в таблицу
                     dataGridViewBooks.SuspendLayout();
                     dataGridViewBooks.Rows.Clear();
-
                     foreach (var book in books)
                     {
                         int rowIndex = dataGridViewBooks.Rows.Add();
                         var row = dataGridViewBooks.Rows[rowIndex];
                         row.Tag = book;
-                        //row.Cells["colPhoto"].Value = LoadProductImage()
-
                         row.Cells["colInfo"].Value = FormatBookInfo(book);
-
-                        row.Cells["colAviableCopies"].Value = $"{book.AvailableCopies}";
-                        row.Cells["colAviableCopies"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
+                        row.Cells["colAviableCopies"].Value = book.AvailableCopies;
                         ApplyRowStyles(row, book);
                     }
                     dataGridViewBooks.ResumeLayout();
-                    dataGridViewBooks.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
         private void ApplyRowStyles(DataGridViewRow row, Book book)
@@ -281,7 +327,7 @@ namespace Library
                 }
 
                 FormAddEditBook form = new FormAddEditBook();
-
+                form.labelAddBook.Text = "Редакировать книгу";
                 // Загружаем справочники
                 var authors = context.Authors.ToList();
                 var genres = context.Genres.ToList();
@@ -335,6 +381,20 @@ namespace Library
         {
             FormOrders form = new FormOrders(CurrentUser);
             form.ShowDialog();
+        }
+        private void comboBoxFilterPublisher_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadBooks();
+        }
+
+        private void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            LoadBooks();
+        }
+
+        private void comboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadBooks();
         }
     }
 }

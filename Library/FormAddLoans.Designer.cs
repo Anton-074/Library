@@ -45,7 +45,7 @@
             buttonCancel = new Button();
             buttonSave = new Button();
             panelTop = new Panel();
-            labelAddBook = new Label();
+            labelAddOrder = new Label();
             panelFill.SuspendLayout();
             panelBottom.SuspendLayout();
             panelTop.SuspendLayout();
@@ -226,7 +226,7 @@
             // panelTop
             // 
             panelTop.BackColor = Color.White;
-            panelTop.Controls.Add(labelAddBook);
+            panelTop.Controls.Add(labelAddOrder);
             panelTop.Dock = DockStyle.Top;
             panelTop.Location = new Point(0, 0);
             panelTop.Margin = new Padding(4);
@@ -235,16 +235,16 @@
             panelTop.Size = new Size(384, 72);
             panelTop.TabIndex = 3;
             // 
-            // labelAddBook
+            // labelAddOrder
             // 
-            labelAddBook.Dock = DockStyle.Fill;
-            labelAddBook.Location = new Point(13, 13);
-            labelAddBook.Margin = new Padding(4, 0, 4, 0);
-            labelAddBook.Name = "labelAddBook";
-            labelAddBook.Size = new Size(358, 46);
-            labelAddBook.TabIndex = 0;
-            labelAddBook.Text = "Добавить заказ";
-            labelAddBook.TextAlign = ContentAlignment.MiddleCenter;
+            labelAddOrder.Dock = DockStyle.Fill;
+            labelAddOrder.Location = new Point(13, 13);
+            labelAddOrder.Margin = new Padding(4, 0, 4, 0);
+            labelAddOrder.Name = "labelAddOrder";
+            labelAddOrder.Size = new Size(358, 46);
+            labelAddOrder.TabIndex = 0;
+            labelAddOrder.Text = "Добавить заказ";
+            labelAddOrder.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // FormAddLoans
             // 
@@ -257,6 +257,7 @@
             Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "FormAddLoans";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FormAddLoans";
             panelFill.ResumeLayout(false);
             panelBottom.ResumeLayout(false);
@@ -276,7 +277,6 @@
         private Button buttonCancel;
         private Button buttonSave;
         private Panel panelTop;
-        private Label labelAddBook;
         private Label label1;
         private Label label2;
         public ComboBox comboBoxStatus;
@@ -284,5 +284,6 @@
         public DateTimePicker dateTimePickerReturn;
         public DateTimePicker dateTimePickerPlan;
         public DateTimePicker dateTimePickerIs;
+        public Label labelAddOrder;
     }
 }

@@ -33,10 +33,17 @@
             buttonDelete = new Button();
             buttonEdit = new Button();
             buttonAdd = new Button();
-            labelName = new Label();
             buttonExit = new Button();
+            panel2 = new Panel();
+            textBoxSearch = new TextBox();
+            Поиск = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            comboBoxSort = new ComboBox();
+            comboBoxStatusFilter = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewOrders).BeginInit();
             panelTop.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // dataGridViewOrders
@@ -49,15 +56,15 @@
             dataGridViewOrders.BorderStyle = BorderStyle.None;
             dataGridViewOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewOrders.ColumnHeadersVisible = false;
-            dataGridViewOrders.Dock = DockStyle.Fill;
-            dataGridViewOrders.Location = new Point(0, 76);
+            dataGridViewOrders.Dock = DockStyle.Bottom;
+            dataGridViewOrders.Location = new Point(0, 143);
             dataGridViewOrders.Margin = new Padding(4);
             dataGridViewOrders.MultiSelect = false;
             dataGridViewOrders.Name = "dataGridViewOrders";
             dataGridViewOrders.ReadOnly = true;
             dataGridViewOrders.RowHeadersVisible = false;
             dataGridViewOrders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewOrders.Size = new Size(984, 585);
+            dataGridViewOrders.Size = new Size(984, 518);
             dataGridViewOrders.TabIndex = 3;
             // 
             // panelTop
@@ -66,7 +73,6 @@
             panelTop.Controls.Add(buttonDelete);
             panelTop.Controls.Add(buttonEdit);
             panelTop.Controls.Add(buttonAdd);
-            panelTop.Controls.Add(labelName);
             panelTop.Controls.Add(buttonExit);
             panelTop.Dock = DockStyle.Top;
             panelTop.Location = new Point(0, 0);
@@ -124,17 +130,6 @@
             buttonAdd.Visible = false;
             buttonAdd.Click += buttonAdd_Click;
             // 
-            // labelName
-            // 
-            labelName.AutoSize = true;
-            labelName.Dock = DockStyle.Right;
-            labelName.Location = new Point(741, 13);
-            labelName.Margin = new Padding(4, 0, 4, 0);
-            labelName.Name = "labelName";
-            labelName.Size = new Size(37, 19);
-            labelName.TabIndex = 8;
-            labelName.Text = "Имя";
-            // 
             // buttonExit
             // 
             buttonExit.BackColor = Color.FromArgb(74, 111, 165);
@@ -150,20 +145,88 @@
             buttonExit.UseVisualStyleBackColor = false;
             buttonExit.Click += buttonExit_Click;
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.White;
+            panel2.Controls.Add(textBoxSearch);
+            panel2.Controls.Add(Поиск);
+            panel2.Controls.Add(label2);
+            panel2.Controls.Add(label1);
+            panel2.Controls.Add(comboBoxSort);
+            panel2.Controls.Add(comboBoxStatusFilter);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 76);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(984, 64);
+            panel2.TabIndex = 4;
+            // 
+            // textBoxSearch
+            // 
+            textBoxSearch.Location = new Point(719, 34);
+            textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.Size = new Size(235, 26);
+            textBoxSearch.TabIndex = 5;
+            // 
+            // Поиск
+            // 
+            Поиск.Location = new Point(719, 7);
+            Поиск.Name = "Поиск";
+            Поиск.Size = new Size(235, 24);
+            Поиск.TabIndex = 4;
+            Поиск.Text = "Поиск";
+            Поиск.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            label2.Location = new Point(383, 7);
+            label2.Name = "label2";
+            label2.Size = new Size(188, 24);
+            label2.TabIndex = 3;
+            label2.Text = "Сортировка";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label1
+            // 
+            label1.Location = new Point(10, 7);
+            label1.Name = "label1";
+            label1.Size = new Size(188, 24);
+            label1.TabIndex = 2;
+            label1.Text = "Фильтрация";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // comboBoxSort
+            // 
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Location = new Point(383, 34);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(188, 27);
+            comboBoxSort.TabIndex = 1;
+            // 
+            // comboBoxStatusFilter
+            // 
+            comboBoxStatusFilter.FormattingEnabled = true;
+            comboBoxStatusFilter.Location = new Point(10, 34);
+            comboBoxStatusFilter.Name = "comboBoxStatusFilter";
+            comboBoxStatusFilter.Size = new Size(188, 27);
+            comboBoxStatusFilter.TabIndex = 0;
+            // 
             // FormOrders
             // 
             AutoScaleDimensions = new SizeF(9F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(984, 661);
+            Controls.Add(panel2);
             Controls.Add(dataGridViewOrders);
             Controls.Add(panelTop);
             Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
             Margin = new Padding(4);
             Name = "FormOrders";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FormOrders";
             ((System.ComponentModel.ISupportInitialize)dataGridViewOrders).EndInit();
             panelTop.ResumeLayout(false);
-            panelTop.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -174,7 +237,13 @@
         private Button buttonDelete;
         private Button buttonEdit;
         private Button buttonAdd;
-        private Label labelName;
         private Button buttonExit;
+        private Panel panel2;
+        private TextBox textBoxSearch;
+        private Label Поиск;
+        private Label label2;
+        private Label label1;
+        private ComboBox comboBoxSort;
+        private ComboBox comboBoxStatusFilter;
     }
 }

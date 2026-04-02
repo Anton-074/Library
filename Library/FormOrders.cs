@@ -58,19 +58,71 @@ namespace Library
                 buttonEdit.Visible = true;
                 buttonDelete.Visible = true;
             }
+            // Заполнение фильтра статусов
+            using (var context = new LibraryContext())
+            {
+                comboBoxStatusFilter.Items.Clear();
+                comboBoxStatusFilter.Items.Add("Все статусы");
+                var statuses = context.Statuses.Select(s => s.Name).ToList();
+                comboBoxStatusFilter.Items.AddRange(statuses.ToArray());
+                comboBoxStatusFilter.SelectedIndex = 0;
+            }
+
+            // Заполнение вариантов сортировки
+            comboBoxSort.Items.Clear();
+            comboBoxSort.Items.AddRange(new string[] { "Сначала новые", "По имени (А-Я)", "По дате возврата" });
+            comboBoxSort.SelectedIndex = 0;
+
+            // Подписка на события обновления (чтобы искало сразу при вводе)
+            textBoxSearch.TextChanged += (s, e) => LoadOrders();
+            comboBoxStatusFilter.SelectedIndexChanged += (s, e) => LoadOrders();
+            comboBoxSort.SelectedIndexChanged += (s, e) => LoadOrders();
         }
         public void LoadOrders()
         {
             try
             {
-                using (var db = new LibraryContext())
+                using (var context = new LibraryContext())
                 {
-                    var loans = db.Loans
+                    // 1. Начинаем запрос с подгрузкой всех связей
+                    IQueryable<Loan> query = context.Loans
                         .Include(i => i.User)
                         .Include(i => i.Status)
-                        .Include(i => i.Book)
-                        .ToList();
+                        .Include(i => i.Book);
 
+                    // 2. ФИЛЬТРАЦИЯ ПО СТАТУСУ
+                    // Допустим, первый элемент в комбобоксе "Все статусы"
+                    if (comboBoxStatusFilter.SelectedIndex > 0)
+                    {
+                        string selectedStatus = comboBoxStatusFilter.SelectedItem.ToString();
+                        query = query.Where(l => l.Status.Name == selectedStatus);
+                    }
+
+                    // 3. ПОИСК (по имени читателя или аннотации книги)
+                    string search = textBoxSearch.Text.Trim().ToLower();
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        query = query.Where(l => l.User.Name.ToLower().Contains(search) ||
+                                                 l.Book.Annotation.ToLower().Contains(search));
+                    }
+
+                    // 4. СОРТИРОВКА
+                    switch (comboBoxSort.SelectedIndex)
+                    {
+                        case 0: // По дате выдачи (сначала новые)
+                            query = query.OrderByDescending(l => l.DateIssue);
+                            break;
+                        case 1: // По имени читателя
+                            query = query.OrderBy(l => l.User.Name);
+                            break;
+                        case 2: // По плановой дате возврата
+                            query = query.OrderBy(l => l.PlannedReturnDate);
+                            break;
+                    }
+
+                    var loans = query.ToList();
+
+                    // 5. Отрисовка в таблицу
                     dataGridViewOrders.SuspendLayout();
                     dataGridViewOrders.Rows.Clear();
 
@@ -79,17 +131,17 @@ namespace Library
                         int rowIndex = dataGridViewOrders.Rows.Add();
                         var row = dataGridViewOrders.Rows[rowIndex];
                         row.Tag = loan;
-                        //row.Cells["colPhoto"].Value = LoadProductImage()
 
                         row.Cells["colInfo"].Value = FormatOrderInfo(loan);
+                        row.Cells["colDataIs"].Value = loan.DateIssue.ToString("dd.MM.yyyy");
+                        row.Cells["colDataPlan"].Value = loan.PlannedReturnDate.ToString("dd.MM.yyyy");
+                        row.Cells["colDataReturn"].Value = loan.ReturnDate?.ToString("dd.MM.yyyy") ?? "Не возвращена";
 
-                        row.Cells["colDataIs"].Value = $"{loan.DateIssue}";
-                        row.Cells["colDataPlan"].Value = $"{loan.PlannedReturnDate}";
-                        row.Cells["colDataReturn"].Value = $"{loan.ReturnDate}";
-                        row.Cells["colDataPlan"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                        row.Cells["colDataIs"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                        row.Cells["colDataReturn"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
+                        // Добавим визуальный акцент: если просрочено, красим текст в красный
+                        if (loan.ReturnDate == null && loan.PlannedReturnDate < DateOnly.FromDateTime(DateTime.Now))
+                        {
+                            row.DefaultCellStyle.ForeColor = Color.Red;
+                        }
                     }
                     dataGridViewOrders.ResumeLayout();
                     dataGridViewOrders.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
@@ -97,13 +149,12 @@ namespace Library
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}");
             }
         }
         private string FormatOrderInfo(Loan loan)
         {
-            return $"{loan.User.Name}" + Environment.NewLine +
+            return $"{loan.User.Ticket}" + Environment.NewLine +
                 $"Статус: {loan.Status.Name}" + Environment.NewLine +
                 $"Аннотация: {loan.Book.Annotation}";
         }
@@ -189,6 +240,7 @@ namespace Library
         }
         private void buttonEdit_Click(object sender, EventArgs e)
         {
+            
             // 1. Проверяем, выбрана ли строка в таблице
             if (dataGridViewOrders.CurrentRow == null || dataGridViewOrders.CurrentRow.Tag == null)
             {
@@ -216,7 +268,7 @@ namespace Library
                 }
 
                 FormAddLoans form = new FormAddLoans();
-
+                form.labelAddOrder.Text = "Редакировать заказ";
                 // Загружаем справочники
                 var users = context.Users.ToList();
                 var statuses = context.Statuses.ToList();
